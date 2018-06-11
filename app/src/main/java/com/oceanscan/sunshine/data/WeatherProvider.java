@@ -11,15 +11,16 @@ import android.support.annotation.NonNull;
 
 import com.oceanscan.sunshine.utils.SunshineDateUtils;
 
+import static com.oceanscan.sunshine.utils.Constants.Weather.CODE_WEATHER;
+import static com.oceanscan.sunshine.utils.Constants.Weather.CODE_WEATHER_WITH_DATE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_DATE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.CONTENT_AUTHORITY;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.PATH_WEATHER;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.TABLE_NAME;
+
 public class WeatherProvider extends ContentProvider {
 
-    /*
-     * These constant will be used to match URIs with the data they are looking for. We will take
-     * advantage of the UriMatcher class to make that matching MUCH easier than doing something
-     * ourselves, such as using regular expressions.
-     */
-    public static final int CODE_WEATHER = 100;
-    public static final int CODE_WEATHER_WITH_DATE = 101;
+
 
     /*
      * The URI Matcher used by this content provider. The leading "s" in this variable name
@@ -53,7 +54,7 @@ public class WeatherProvider extends ContentProvider {
          * return for the root URI. It's common to use NO_MATCH as the code for this case.
          */
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = WeatherContract.CONTENT_AUTHORITY;
+        final String authority = CONTENT_AUTHORITY;
 
         /*
          * For each type of URI you want to add, create a corresponding code. Preferably, these are
@@ -62,14 +63,14 @@ public class WeatherProvider extends ContentProvider {
          */
 
         /* This URI is content://com.example.android.sunshine/weather/ */
-        matcher.addURI(authority, WeatherContract.PATH_WEATHER, CODE_WEATHER);
+        matcher.addURI(authority, PATH_WEATHER, CODE_WEATHER);
 
         /*
          * This URI would look something like content://com.example.android.sunshine/weather/1472214172
          * The "/#" signifies to the UriMatcher that if PATH_WEATHER is followed by ANY number,
          * that it should return the CODE_WEATHER_WITH_DATE code
          */
-        matcher.addURI(authority, WeatherContract.PATH_WEATHER + "/#", CODE_WEATHER_WITH_DATE);
+        matcher.addURI(authority, PATH_WEATHER + "/#", CODE_WEATHER_WITH_DATE);
 
         return matcher;
     }
@@ -125,12 +126,12 @@ public class WeatherProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long weatherDate =
-                                value.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
+                                value.getAsLong(COLUMN_DATE);
                         if (!SunshineDateUtils.isDateNormalized(weatherDate)) {
                             throw new IllegalArgumentException("Date must be normalized to insert");
                         }
 
-                        long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(TABLE_NAME, null, value);
                         if (_id != -1) {
                             rowsInserted++;
                         }
@@ -210,7 +211,7 @@ public class WeatherProvider extends ContentProvider {
 
                 cursor = mOpenHelper.getReadableDatabase().query(
                         /* Table we are going to query */
-                        WeatherContract.WeatherEntry.TABLE_NAME,
+                       TABLE_NAME,
                         /*
                          * A projection designates the columns we want returned in our Cursor.
                          * Passing null will return all columns of data within the Cursor.
@@ -227,7 +228,7 @@ public class WeatherProvider extends ContentProvider {
                          * within the selectionArguments array will be inserted into the
                          * selection statement by SQLite under the hood.
                          */
-                        WeatherContract.WeatherEntry.COLUMN_DATE + " = ? ",
+                        COLUMN_DATE + " = ? ",
                         selectionArguments,
                         null,
                         null,
@@ -249,7 +250,7 @@ public class WeatherProvider extends ContentProvider {
              */
             case CODE_WEATHER: {
                 cursor = mOpenHelper.getReadableDatabase().query(
-                        WeatherContract.WeatherEntry.TABLE_NAME,
+                       TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -295,7 +296,7 @@ public class WeatherProvider extends ContentProvider {
 
             case CODE_WEATHER:
                 numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
-                        WeatherContract.WeatherEntry.TABLE_NAME,
+                       TABLE_NAME,
                         selection,
                         selectionArgs);
 

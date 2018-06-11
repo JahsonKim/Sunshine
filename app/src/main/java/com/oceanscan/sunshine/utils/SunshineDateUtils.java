@@ -9,9 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static com.oceanscan.sunshine.utils.Constants.DateUtils.DAY_IN_MILLIS;
+
 public class SunshineDateUtils {
     /* Milliseconds in a day */
-    public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
+
 
     /**
      * This method returns the number of milliseconds (UTC time) for today's date at midnight in
@@ -136,6 +138,7 @@ public class SunshineDateUtils {
         if (millisSinceEpoch % DAY_IN_MILLIS == 0) {
             isDateNormalized = true;
         }
+
 
         return isDateNormalized;
     }

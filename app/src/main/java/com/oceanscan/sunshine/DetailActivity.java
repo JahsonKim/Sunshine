@@ -21,6 +21,15 @@ import com.oceanscan.sunshine.data.WeatherContract;
 import com.oceanscan.sunshine.utils.SunshineDateUtils;
 import com.oceanscan.sunshine.utils.SunshineWeatherUtils;
 
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_DATE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_DEGREES;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_HUMIDITY;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_MAX_TEMP;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_MIN_TEMP;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_PRESSURE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_WEATHER_ID;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_WIND_SPEED;
+
 public class DetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -34,15 +43,15 @@ public class DetailActivity extends AppCompatActivity implements
      * The columns of data that we are interested in displaying within our DetailActivity's
      * weather display.
      */
-    public static final String[] WEATHER_DETAIL_PROJECTION = {
-            WeatherContract.WeatherEntry.COLUMN_DATE,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
-            WeatherContract.WeatherEntry.COLUMN_PRESSURE,
-            WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
-            WeatherContract.WeatherEntry.COLUMN_DEGREES,
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
+    public static final String[] WEATHER_DETAIL_PROJECTION = new String[]{
+            COLUMN_DATE,
+            COLUMN_MAX_TEMP,
+            COLUMN_MIN_TEMP,
+            COLUMN_HUMIDITY,
+            COLUMN_PRESSURE,
+            COLUMN_WIND_SPEED,
+            COLUMN_DEGREES,
+            COLUMN_WEATHER_ID
     };
 
     /*

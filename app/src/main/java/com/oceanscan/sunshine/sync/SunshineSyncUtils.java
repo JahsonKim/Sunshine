@@ -17,19 +17,15 @@ import com.oceanscan.sunshine.data.WeatherContract;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.oceanscan.sunshine.utils.Constants.WeatherUtils.SUNSHINE_SYNC_TAG;
+import static com.oceanscan.sunshine.utils.Constants.WeatherUtils.SYNC_FLEXTIME_SECONDS;
+import static com.oceanscan.sunshine.utils.Constants.WeatherUtils.SYNC_INTERVAL_SECONDS;
+
 public class SunshineSyncUtils {
 
-    /*
-     * Interval at which to sync with the weather. Use TimeUnit for convenience, rather than
-     * writing out a bunch of multiplication ourselves and risk making a silly mistake.
-     */
-    private static final int SYNC_INTERVAL_HOURS = 3;
-    private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.HOURS.toSeconds(SYNC_INTERVAL_HOURS);
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
     private static boolean sInitialized;
 
-    private static final String SUNSHINE_SYNC_TAG = "sunshine-sync";
 
     /**
      * Schedules a repeating sync of Sunshine's weather data using FirebaseJobDispatcher.

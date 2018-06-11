@@ -16,12 +16,13 @@ import com.oceanscan.sunshine.R;
 import com.oceanscan.sunshine.utils.SunshineDateUtils;
 import com.oceanscan.sunshine.utils.SunshineWeatherUtils;
 
+import static com.oceanscan.sunshine.utils.Constants.VIEW_TYPE_FUTURE_DAY;
+import static com.oceanscan.sunshine.utils.Constants.VIEW_TYPE_TODAY;
+
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
     /* The context we use to utility methods, app resources and layout inflaters */
     private final Context mContext;
-    private static final int VIEW_TYPE_TODAY = 0;
-    private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private static String TAG=ForecastAdapter.class.getSimpleName();
 
     /*

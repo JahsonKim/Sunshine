@@ -7,6 +7,9 @@ import android.preference.PreferenceManager;
 import com.oceanscan.sunshine.R;
 import com.oceanscan.sunshine.utils.Constants;
 
+import static com.oceanscan.sunshine.utils.Constants.Preferences.PREF_COORD_LAT;
+import static com.oceanscan.sunshine.utils.Constants.Preferences.PREF_COORD_LONG;
+
 public class SunshinePreferences {
 
     /*
@@ -14,8 +17,7 @@ public class SunshinePreferences {
      * store the latitude and longitude. We will also use the latitude and longitude to create
      * queries for the weather.
      */
-    public static final String PREF_COORD_LAT = "coord_lat";
-    public static final String PREF_COORD_LONG = "coord_long";
+
 
     /**
      * Helper method to handle setting location details in Preferences (city name, latitude,

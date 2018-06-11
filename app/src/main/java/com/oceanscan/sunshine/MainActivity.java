@@ -39,7 +39,13 @@ import com.oceanscan.sunshine.utils.SunshineWeatherUtils;
 
 import java.net.URL;
 
-import static com.oceanscan.sunshine.utils.Constants.WEATHER_LOADER;
+import static com.oceanscan.sunshine.data.WeatherContract.WeatherEntry.CONTENT_URI;
+import static com.oceanscan.sunshine.data.WeatherContract.WeatherEntry.buildWeatherUriWithDate;
+import static com.oceanscan.sunshine.data.WeatherContract.WeatherEntry.getSqlSelectForTodayOnwards;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_DATE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_MAX_TEMP;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_MIN_TEMP;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_WEATHER_ID;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -52,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements
      * weather data.
      */
     public static final String[] MAIN_FORECAST_PROJECTION = {
-            WeatherContract.WeatherEntry.COLUMN_DATE,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
+            COLUMN_DATE,
+            COLUMN_MAX_TEMP,
+            COLUMN_MIN_TEMP,
+            COLUMN_WEATHER_ID,
     };
 
     /*
@@ -204,15 +210,15 @@ public class MainActivity extends AppCompatActivity implements
 
             case ID_FORECAST_LOADER:
                 /* URI for all rows of weather data in our weather table */
-                Uri forecastQueryUri = WeatherContract.WeatherEntry.CONTENT_URI;
+                Uri forecastQueryUri = CONTENT_URI;
                 /* Sort order: Ascending by date */
-                String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+                String sortOrder = COLUMN_DATE + " ASC";
                 /*
                  * A SELECTION in SQL declares which rows you'd like to return. In our case, we
                  * want all weather data from today onwards that is stored in our weather table.
                  * We created a handy method to do that in our WeatherEntry class.
                  */
-                String selection = WeatherContract.WeatherEntry.getSqlSelectForTodayOnwards();
+                String selection = getSqlSelectForTodayOnwards();
 
                 return new CursorLoader(this,
                         forecastQueryUri,
@@ -228,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements
 
     /**
      * Called when a Loader has finished loading its data.
-     *
+     * <p>
      * NOTE: There is one small bug in this code. If no data is present in the cursor do to an
      * initial load being performed with no access to internet, the loading indicator will show
      * indefinitely, until data is present from the ContentProvider. This will be fixed in a
@@ -271,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClick(long date) {
         Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
-        Uri uriForDateClicked = WeatherContract.WeatherEntry.buildWeatherUriWithDate(date);
+        Uri uriForDateClicked = buildWeatherUriWithDate(date);
         weatherDetailIntent.setData(uriForDateClicked);
         startActivity(weatherDetailIntent);
     }
@@ -308,10 +314,8 @@ public class MainActivity extends AppCompatActivity implements
      * This is where we inflate and set up the menu for this Activity.
      *
      * @param menu The options menu in which you place your items.
-     *
      * @return You must return true for the menu to be displayed;
-     *         if you return false it will not be shown.
-     *
+     * if you return false it will not be shown.
      * @see #onPrepareOptionsMenu
      * @see #onOptionsItemSelected
      */
@@ -329,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements
      * Callback invoked when a menu item was selected from this Activity's menu.
      *
      * @param item The menu item that was selected by the user
-     *
      * @return true if you handle the menu click here, false otherwise
      */
     @Override

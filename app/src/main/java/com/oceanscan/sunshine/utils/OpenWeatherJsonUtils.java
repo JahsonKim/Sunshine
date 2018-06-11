@@ -12,34 +12,33 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 
+import static com.oceanscan.sunshine.utils.Constants.DateUtils.DAY_IN_MILLIS;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_DATE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_DEGREES;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_HUMIDITY;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_MAX_TEMP;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_MIN_TEMP;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_PRESSURE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_WEATHER_ID;
+import static com.oceanscan.sunshine.utils.Constants.WeatherContract.COLUMN_WIND_SPEED;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_CITY;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_COORD;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_HUMIDITY;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_LATITUDE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_LIST;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_LONGITUDE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_MAX;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_MESSAGE_CODE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_MIN;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_PRESSURE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_TEMPERATURE;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_WEATHER;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_WEATHER_ID;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_WINDSPEED;
+import static com.oceanscan.sunshine.utils.Constants.WeatherJSONUtils.OWM_WIND_DIRECTION;
+
 public class OpenWeatherJsonUtils {
-    /* Location information */
-    private static final String OWM_CITY = "city";
-    private static final String OWM_COORD = "coord";
 
-    /* Location coordinate */
-    private static final String OWM_LATITUDE = "lat";
-    private static final String OWM_LONGITUDE = "lon";
-
-    /* Weather information. Each day's forecast info is an element of the "list" array */
-    private static final String OWM_LIST = "list";
-
-    private static final String OWM_PRESSURE = "pressure";
-    private static final String OWM_HUMIDITY = "humidity";
-    private static final String OWM_WINDSPEED = "speed";
-    private static final String OWM_WIND_DIRECTION = "deg";
-
-    /* All temperatures are children of the "temp" object */
-    private static final String OWM_TEMPERATURE = "temp";
-
-    /* Max temperature for the day */
-    private static final String OWM_MAX = "max";
-    private static final String OWM_MIN = "min";
-
-    private static final String OWM_WEATHER = "weather";
-    private static final String OWM_WEATHER_ID = "id";
-
-    private static final String OWM_MESSAGE_CODE = "cod";
 
     /**
      * This method parses JSON from a web response and returns an array of Strings
@@ -119,7 +118,7 @@ public class OpenWeatherJsonUtils {
              * We ignore all the datetime values embedded in the JSON and assume that
              * the values are returned in-order by day (which is not guaranteed to be correct).
              */
-            dateTimeMillis = normalizedUtcStartDay + SunshineDateUtils.DAY_IN_MILLIS * i;
+            dateTimeMillis = normalizedUtcStartDay + DAY_IN_MILLIS * i;
 
             pressure = dayForecast.getDouble(OWM_PRESSURE);
             humidity = dayForecast.getInt(OWM_HUMIDITY);
@@ -148,14 +147,14 @@ public class OpenWeatherJsonUtils {
             low = temperatureObject.getDouble(OWM_MIN);
 
             ContentValues weatherValues = new ContentValues();
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTimeMillis);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, high);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, low);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+            weatherValues.put(COLUMN_DATE, dateTimeMillis);
+            weatherValues.put(COLUMN_HUMIDITY, humidity);
+            weatherValues.put(COLUMN_PRESSURE, pressure);
+            weatherValues.put(COLUMN_WIND_SPEED, windSpeed);
+            weatherValues.put(COLUMN_DEGREES, windDirection);
+            weatherValues.put(COLUMN_MAX_TEMP, high);
+            weatherValues.put(COLUMN_MIN_TEMP, low);
+            weatherValues.put(COLUMN_WEATHER_ID, weatherId);
 
             weatherContentValues[i] = weatherValues;
         }
