@@ -57,7 +57,7 @@
     <!-- Title of the SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
 
-    <string name="content_authority">com.example.android.sunshine</string>
+    <string name="content_authority">com.oceanscan.sunshine.data</string>
 
 
     <!-- - - - - - - - - - - - - - - -

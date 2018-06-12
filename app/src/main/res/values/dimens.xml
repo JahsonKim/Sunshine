@@ -14,6 +14,6 @@
     <dimen name="list_item_high_temperature_margin">12dp</dimen>
     <dimen name="list_item_padding_vertical">12dp</dimen>
     <dimen name="list_item_low_temperature_text_view_size">48dp</dimen>
-    <dimen name="list_item_date_left_margin">16dp</dimen>
+    <dimen name="list_item_date_left_margin">8dp</dimen>
     <dimen name="list_item_date_start_margin">@dimen/list_item_date_left_margin</dimen>
 </resources>

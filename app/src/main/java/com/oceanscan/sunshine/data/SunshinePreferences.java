@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import com.oceanscan.sunshine.R;
 import com.oceanscan.sunshine.utils.Constants;
 
+import static com.oceanscan.sunshine.utils.Constants.Preferences.MY_LAT_COORD;
+import static com.oceanscan.sunshine.utils.Constants.Preferences.MY_LONG_COORD;
 import static com.oceanscan.sunshine.utils.Constants.Preferences.PREF_COORD_LAT;
 import static com.oceanscan.sunshine.utils.Constants.Preferences.PREF_COORD_LONG;
 
@@ -35,6 +37,16 @@ public class SunshinePreferences {
 
         editor.putLong(PREF_COORD_LAT, Double.doubleToRawLongBits(lat));
         editor.putLong(PREF_COORD_LONG, Double.doubleToRawLongBits(lon));
+        editor.apply();
+    }
+
+    //set my location coordinate
+    public static void setMyLocationDetails(Context context, double lat, double lon) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putLong(MY_LAT_COORD, Double.doubleToRawLongBits(lat));
+        editor.putLong(MY_LONG_COORD, Double.doubleToRawLongBits(lon));
         editor.apply();
     }
 
@@ -67,7 +79,7 @@ public class SunshinePreferences {
         String keyForLocation = context.getString(R.string.pref_location_key);
         String defaultLocation = context.getString(R.string.pref_location_default);
 
-        return sp.getString(keyForLocation, defaultLocation);
+        return defaultLocation;//sp.getString(keyForLocation, defaultLocation);
     }
 
     /**
@@ -122,6 +134,31 @@ public class SunshinePreferences {
         return preferredCoordinates;
     }
 
+
+    public static double[] getMyLocationCoordinates(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        double[] preferredCoordinates = new double[2];
+
+        /*
+         * This is a hack we have to resort to since you can't store doubles in SharedPreferences.
+         *
+         * Double.doubleToLongBits returns an integer corresponding to the bits of the given
+         * IEEE 754 double precision value.
+         *
+         * Double.longBitsToDouble does the opposite, converting a long (that represents a double)
+         * into the double itself.
+         */
+        preferredCoordinates[0] = Double
+                .longBitsToDouble(sp.getLong(MY_LAT_COORD, Double.doubleToRawLongBits(0.0)));
+        preferredCoordinates[1] = Double
+                .longBitsToDouble(sp.getLong(MY_LONG_COORD, Double.doubleToRawLongBits(0.0)));
+
+        return preferredCoordinates;
+    }
+
+
+
     /**
      * Returns true if the latitude and longitude values are available. The latitude and
      * longitude will not be available until the lesson where the PlacePicker API is taught.
@@ -132,8 +169,11 @@ public class SunshinePreferences {
     public static boolean isLocationLatLonAvailable(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
-        boolean spContainLatitude = sp.contains(PREF_COORD_LAT);
-        boolean spContainLongitude = sp.contains(PREF_COORD_LONG);
+//        boolean spContainLatitude = sp.contains(PREF_COORD_LAT);
+//        boolean spContainLongitude = sp.contains(PREF_COORD_LONG);
+
+        boolean spContainLatitude = sp.contains(MY_LAT_COORD);
+        boolean spContainLongitude = sp.contains(MY_LONG_COORD);
 
         boolean spContainBothLatitudeAndLongitude = false;
         if (spContainLatitude && spContainLongitude) {

@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import static com.oceanscan.sunshine.utils.Constants.Network.APP_ID;
 import static com.oceanscan.sunshine.utils.Constants.Network.DAYS_PARAM;
 import static com.oceanscan.sunshine.utils.Constants.Network.FORECAST_BASE_URL;
 import static com.oceanscan.sunshine.utils.Constants.Network.FORMAT_PARAM;
@@ -59,13 +60,21 @@ public class NetworkUtils {
          */
         public static URL getUrl(Context context) {
             if (SunshinePreferences.isLocationLatLonAvailable(context)) {
-                double[] preferredCoordinates = SunshinePreferences.getLocationCoordinates(context);
+               // double[] preferredCoordinates = SunshinePreferences.getLocationCoordinates(context);
+                double[] preferredCoordinates = SunshinePreferences.getMyLocationCoordinates(context);
                 double latitude = preferredCoordinates[0];
                 double longitude = preferredCoordinates[1];
                 return buildUrlWithLatitudeLongitude(latitude, longitude);
-            } else {
-                String locationQuery = SunshinePreferences.getPreferredWeatherLocation(context);
-                return buildUrlWithLocationQuery(locationQuery);
+            }
+            else {
+               // String locationQuery = SunshinePreferences.getPreferredWeatherLocation(context);
+                //default location london;
+                //Used when user denies the app permission to access location.
+                double latitude = 51.5074;
+                double longitude = 0.1278;
+
+                return buildUrlWithLatitudeLongitude(latitude, longitude);
+              // return buildUrlWithLocationQuery(locationQuery);
             }
         }
 
@@ -81,14 +90,16 @@ public class NetworkUtils {
             Uri weatherQueryUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(LAT_PARAM, String.valueOf(latitude))
                     .appendQueryParameter(LON_PARAM, String.valueOf(longitude))
-                    .appendQueryParameter(FORMAT_PARAM, format)
-                    .appendQueryParameter(UNITS_PARAM, units)
-                    .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                    .appendQueryParameter(APP_ID, Constants.OpenWeatherAPI.API_KEY)
+
+                   // .appendQueryParameter(FORMAT_PARAM, format)
+                   // .appendQueryParameter(UNITS_PARAM, units)
+                   // .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                     .build();
 
             try {
                 URL weatherQueryUrl = new URL(weatherQueryUri.toString());
-                Log.v(TAG, "URL: " + weatherQueryUrl);
+                Log.i(TAG, "URL location: " + weatherQueryUrl);
                 return weatherQueryUrl;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -113,7 +124,7 @@ public class NetworkUtils {
 
             try {
                 URL weatherQueryUrl = new URL(weatherQueryUri.toString());
-                Log.v(TAG, "URL: " + weatherQueryUrl);
+                Log.i(TAG, "URL: " + weatherQueryUrl);
                 return weatherQueryUrl;
             } catch (MalformedURLException e) {
                 e.printStackTrace();

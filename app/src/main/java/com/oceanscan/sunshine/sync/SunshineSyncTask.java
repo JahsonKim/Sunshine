@@ -3,6 +3,7 @@ package com.oceanscan.sunshine.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.oceanscan.sunshine.data.WeatherContract;
 import com.oceanscan.sunshine.utils.NetworkUtils;
@@ -10,7 +11,8 @@ import com.oceanscan.sunshine.utils.OpenWeatherJsonUtils;
 
 import java.net.URL;
 
-class SunshineSyncTask {
+public class SunshineSyncTask {
+    private static String TAG=SunshineSyncTask.class.getSimpleName();
     /**
      * Performs the network request for updated weather, parses the JSON from that request, and
      * inserts the new weather information into our ContentProvider. Will notify the user that new
@@ -28,10 +30,11 @@ class SunshineSyncTask {
              * longitude or off of a simple location as a String.
              */
             URL weatherRequestUrl = NetworkUtils.getUrl(context);
+            Log.i(TAG,"URL "+weatherRequestUrl.toString());
 
             /* Use the URL to retrieve the JSON */
             String jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl);
-
+            Log.i(TAG,"jsonWeatherResponse "+jsonWeatherResponse);
             /* Parse the JSON into a list of weather values */
             ContentValues[] weatherValues = OpenWeatherJsonUtils
                     .getWeatherContentValuesFromJson(context, jsonWeatherResponse);
