@@ -332,10 +332,12 @@ public class MainActivity extends AppCompatActivity implements
             if (PermissionUtil.verifyPermissions(grantResults)) {
                 // All required permissions have been granted, display contacts fragment.
                 scheduleLocationService(MainActivity.this);
+                getCurrentLocation();
                 Log.i(TAG, "Permission fine location allowed");
             } else {
 
-                Toast.makeText(getApplicationContext(), "Permission denied.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Sunshine requires location permission to access weather data.", Toast.LENGTH_LONG).show();
+                finish();
             }
 
         } else {
