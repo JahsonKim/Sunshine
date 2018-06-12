@@ -2,10 +2,6 @@ package com.oceanscan.sunshine.utils;
 
 import android.content.pm.PackageManager;
 
-/**
- * Created by Extra Inch on 12/23/2016.
- */
-
 
 public abstract class PermissionUtil {
 
@@ -13,7 +9,7 @@ public abstract class PermissionUtil {
      * Check that all given permissions have been granted by verifying that each entry in the
      * given array is of the value {@link PackageManager#PERMISSION_GRANTED}.
      *
-     * @see Activity#onRequestPermissionsResult(int, String[], int[])
+     *
      */
     public static boolean verifyPermissions(int[] grantResults) {
         // At least one result must be checked.
